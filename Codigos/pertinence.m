@@ -60,12 +60,32 @@ h(1) = Hi(1)*Hj(1)*Hk(1)*Hp(1)*Hq(1);
 h(2) = Hi(1)*Hj(1)*Hk(1)*Hp(1)*Hq(2);
 h(3) = Hi(1)*Hj(1)*Hk(1)*Hp(2)*Hq(1);
 h(4) = Hi(1)*Hj(1)*Hk(1)*Hp(2)*Hq(2);
-h(3) = Hi(1)*Hj(1)*Hk(2)*Hp(1)*Hq(1);
-% TODO: Fazer para cada combinacao
-% estou fazendo como se fosse um numero em binario
-% .
-% .
-% .
+h(5) = Hi(1)*Hj(1)*Hk(2)*Hp(1)*Hq(1);
+h(6) = Hi(1)*Hj(1)*Hk(2)*Hp(1)*Hq(2);
+h(7) = Hi(1)*Hj(1)*Hk(2)*Hp(2)*Hq(1);
+h(8) = Hi(1)*Hj(1)*Hk(2)*Hp(2)*Hq(2);
+h(9) = Hi(1)*Hj(2)*Hk(1)*Hp(1)*Hq(1);
+h(10) = Hi(1)*Hj(2)*Hk(1)*Hp(1)*Hq(2);
+h(11) = Hi(1)*Hj(2)*Hk(1)*Hp(2)*Hq(1);
+h(12) = Hi(1)*Hj(2)*Hk(1)*Hp(2)*Hq(2);
+h(13) = Hi(1)*Hj(2)*Hk(2)*Hp(1)*Hq(1);
+h(14) = Hi(1)*Hj(2)*Hk(2)*Hp(1)*Hq(2);
+h(15) = Hi(1)*Hj(2)*Hk(2)*Hp(2)*Hq(1);
+h(16) = Hi(1)*Hj(2)*Hk(2)*Hp(2)*Hq(2);
+h(17) = Hi(2)*Hj(1)*Hk(1)*Hp(1)*Hq(1);
+h(18) = Hi(2)*Hj(1)*Hk(1)*Hp(1)*Hq(2);
+h(19) = Hi(2)*Hj(1)*Hk(1)*Hp(2)*Hq(1);
+h(20) = Hi(2)*Hj(1)*Hk(1)*Hp(2)*Hq(2);
+h(21) = Hi(2)*Hj(1)*Hk(2)*Hp(1)*Hq(1);
+h(22) = Hi(2)*Hj(1)*Hk(2)*Hp(1)*Hq(2);
+h(23) = Hi(2)*Hj(1)*Hk(2)*Hp(2)*Hq(1);
+h(24) = Hi(2)*Hj(1)*Hk(2)*Hp(2)*Hq(2);
+h(25) = Hi(2)*Hj(2)*Hk(1)*Hp(1)*Hq(1);
+h(26) = Hi(2)*Hj(2)*Hk(1)*Hp(1)*Hq(2);
+h(27) = Hi(2)*Hj(2)*Hk(1)*Hp(2)*Hq(1);
+h(28) = Hi(2)*Hj(2)*Hk(1)*Hp(2)*Hq(2);
+h(29) = Hi(2)*Hj(2)*Hk(2)*Hp(1)*Hq(1);
+h(30) = Hi(2)*Hj(2)*Hk(2)*Hp(1)*Hq(2);
 h(31) = Hi(2)*Hj(2)*Hk(2)*Hp(2)*Hq(1);
 h(32) = Hi(2)*Hj(2)*Hk(2)*Hp(2)*Hq(2);
 
