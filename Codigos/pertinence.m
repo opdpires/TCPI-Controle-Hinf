@@ -2,7 +2,7 @@
 %          Hugo Ferreira Marques
 %          Gabriela Gonçalves Amorim de Oliveira
 %
-% created on: Nov 1, 2022
+% created on: Nov 2, 2022
 %
 % file: pertinence.m
 %
