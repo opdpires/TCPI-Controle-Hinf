@@ -26,11 +26,11 @@ nx = size(A{1},1) ; % number of states
 nu = size(Bu,2) ; % number of inputs
 [~,r] = size(A) ; % number of fuzzy rules
 
-sigma = sdpvar(nu,nu,'full');
+sigma = sdpvar(1,1,'full');
 X = sdpvar(nx,nx,'symmetric');
 
 for i=1:r
-    Z{i} = sdpvar(nu,nu,'full');
+    Z{i} = sdpvar(nu,nx,'full');
 end
 %% Vertices Matrices
 
@@ -69,7 +69,7 @@ out.LMIs=LMIs;
 P = 1/(value(X));
 
 for i=1:r
-    K{i} = P*value(Z{i});
+    K{i} = value(Z{i})*P;
 end
 
 %% Output definition   
@@ -83,4 +83,3 @@ else
 end
 
 end
-

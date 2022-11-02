@@ -20,21 +20,22 @@ function [h,verif] = pertinence(xt)
 % it is equal to 0.
 
 %% Variables inicialization
-Hi = zeros(2,1);
-Hi = zeros(2,1);
-Hi = zeros(2,1);
-Hi = zeros(2,1);
-Hi = zeros(2,1);
-
 h = zeros(32,1);
 sum = 0;
 
-% TODO: temos que encontrar os valores reais desses limites
-Hi_min = 0; Hi_max = 0;
-Hj_min = 0; Hj_max = 0;
-Hk_min = 0; Hk_max = 0;
-Hp_min = 0; Hp_max = 0;
-Hq_min = 0; Hq_max = 0;
+% TODO: definir valores da bolinha
+m = 0;
+Ib = 0;
+R = 0;
+
+Kv = m/(m+Ib/(R^2));
+
+% TODO: definir esses valores limite
+Hi_min = Kv*0;     Hi_max = Kv*0;
+Hj_min = Kv*0;     Hj_max = Kv*0; 
+Hk_min = Kv*0*0;   Hk_max = Kv*0*0; 
+Hp_min = Kv*0;     Hp_max = Kv*0;
+Hq_min = Kv*0;     Hq_max = Kv*0;
 
 %% Calculation of the pertinence values associated with each parameter
 
