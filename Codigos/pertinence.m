@@ -49,19 +49,19 @@ Hq_min = Kv*sincTheta2_min;     Hq_max = Kv*sincTheta2_min;
 
 %% Calculation of the pertinence values associated with each parameter
 
-Hi(1) = (Hi_max - xt(1))/(Hi_max-Hi_min);
+Hi(1) = (Hi_max - Kv*xt(4)^2)/(Hi_max-Hi_min); % h1
 Hi(2) = 1-Hi(1);
 
-Hj(1) = (Hj_max - xt(2))/(Hj_max-Hj_min);
+Hj(1) = (Hj_max - Kv*xt(8)^2)/(Hj_max-Hj_min); % h2
 Hj(2) = 1-Hj(1);
 
-Hk(1) = (Hk_max - xt(3))/(Hk_max-Hk_min);
+Hk(1) = (Hk_max - Kv*xt(4)*xt(8))/(Hk_max-Hk_min); % h3
 Hk(2) = 1-Hk(1);
 
-Hp(1) = (Hp_max - xt(4))/(Hp_max-Hp_min);
+Hp(1) = (Hp_max - Kv*xt(3))/(Hp_max-Hp_min); % h4
 Hp(2) = 1-Hp(1);
 
-Hq(1) = (Hq_max - xt(5))/(Hq_max-Hq_min);
+Hq(1) = (Hq_max - Kv*xt(7))/(Hq_max-Hq_min); % h5
 Hq(2) = 1-Hq(1);
 
 %% Calculates the pertinence values for the equivalent parameter "rho"
