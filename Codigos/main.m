@@ -12,20 +12,28 @@
 
 clear;clc;close all;
 
-%% Initializations
-% TODO: definir valores da bolinha
-m = 0;
-Ib = 0;
-R = 0;
+% Definindo valores da bolinha
+m = 0.13; % Massa da bolinha, em Kg
+R = 0.03; % Raio da bolinha, em m
+Ib = 2/5 * m * r^2; % Momento de inércia
 
 Kv = m/(m+Ib/(R^2));
 
-% TODO: definir esses valores limite
-Hi_min = Kv*0;     Hi_max = Kv*0;
-Hj_min = Kv*0;     Hj_max = Kv*0; 
-Hk_min = Kv*0*0;   Hk_max = Kv*0*0; 
-Hp_min = Kv*0;     Hp_max = Kv*0;
-Hq_min = Kv*0;     Hq_max = Kv*0; 
+% Definicao valores limite
+dtheta1_min = -10;
+dtheta1_max = +10;
+dtheta2_min = -10;
+dtheta2_max = +10;
+sincTheta1_min = 0.988;
+sincTheta1_max = 1;
+sincTheta2_min = 0.988;
+sincTheta2_max = 1;
+
+Hi_min = Kv*dtheta1_min^2;     Hi_max = Kv*dtheta1_max^2;
+Hj_min = Kv*dtheta2_min^2;     Hj_max = Kv*dtheta2_max^2; 
+Hk_min = Kv*dtheta1_min*dtheta2_min;   Hk_max = Kv*dtheta1_max*dtheta2_max; 
+Hp_min = Kv*sincTheta1_min;     Hp_max = Kv*sincTheta1_max;
+Hq_min = Kv*sincTheta2_min;     Hq_max = Kv*sincTheta2_min;
 
 A{1} = [0        0        0        0        1 0 0 0;
         Hi_min   Hk_min   Hp_min   0        0 0 0 0;
@@ -35,17 +43,316 @@ A{1} = [0        0        0        0        1 0 0 0;
         Hk_min   Hj_min   0        Hq_min   0 0 0 0; 
         0        0        0        0        0 0 0 1;
         0        0        0        0        0 0 0 0];
+            
 
-% TODO: continuar como se fosse um num em binario
+A{2} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_min   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_min   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{3} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_min   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_min   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{4} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_min   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_min   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{5} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_max   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_min   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{6} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_max   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_min   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{7} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_max   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_min   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{8} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_max   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_min   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{9} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_min   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_max   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{10} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_min   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_max   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{11} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_min   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_max   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{12} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_min   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_max   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{13} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_max   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_max   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{14} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_max   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_max   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{15} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_max   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_max   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{16} = [0        0        0        0        1 0 0 0;
+        Hi_min   Hk_max   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_max   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{17} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_min   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_min   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{18} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_min   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_min   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{19} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_min   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_min   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{20} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_min   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_min   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{21} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_max   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_min   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{22} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_max   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_min   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{23} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_max   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_min   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{24} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_max   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_min   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{25} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_min   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_max   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{26} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_min   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_max   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{27} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_min   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_max   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{28} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_min   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_min   Hj_max   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{29} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_max   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_max   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{30} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_max   Hp_min   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_max   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
+
+A{31} = [0        0        0        0        1 0 0 0;
+        Hi_max   Hk_max   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_max   0        Hq_min   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
+            
 
 A{32} = [0        0        0        0        1 0 0 0;
-         Hi_max   Hk_max   Hp_max   0        0 0 0 0;
-         0        0        0        0        0 0 1 0;
-         0        0        0        0        0 0 0 0;
-         0        0        0        0        0 1 0 0;
-         Hk_max   Hj_max   0        Hq_max   0 0 0 0; 
-         0        0        0        0        0 0 0 1;
-         0        0        0        0        0 0 0 0];
+        Hi_max   Hk_max   Hp_max   0        0 0 0 0;
+        0        0        0        0        0 0 1 0;
+        0        0        0        0        0 0 0 0;
+        0        0        0        0        0 1 0 0;
+        Hk_max   Hj_max   0        Hq_max   0 0 0 0; 
+        0        0        0        0        0 0 0 1;
+        0        0        0        0        0 0 0 0];
 
 Bu = [0 0;
       0 0;
