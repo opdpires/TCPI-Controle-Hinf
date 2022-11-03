@@ -26,7 +26,7 @@ sum = 0;
 % Definindo valores da bolinha
 m = 0.13; % Massa da bolinha, em Kg
 R = 0.03; % Raio da bolinha, em m
-Ib = 2/5 * m * r^2; % Momento de inércia
+Ib = 2/5 * m * R^2; % Momento de inércia
 
 
 Kv = m/(m+Ib/(R^2));
