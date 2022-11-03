@@ -56,7 +56,7 @@ end
 obj=[sigma];
 options=sdpsettings('verbose',0,'warning',1,'solver','mosek','showprogress',0);
 out.sol = optimize(LMIs,obj,options);
-warning('off','YALMIP: strict');
+%warning('off','YALMIP: strict');
 out.p=min(checkset(LMIs));
 out.t=out.sol.solvertime;
 out.variables=size(getvariables(LMIs),2);
@@ -65,8 +65,8 @@ out.LMIs=LMIs;
 
 %% Recovering the gain matrix
 
-% P = inv(value(X));
-P = 1/(value(X));
+%P = inv(value(X));
+P = eye(nx)/(value(X));
 
 for i=1:r
     K{i} = value(Z{i})*P;

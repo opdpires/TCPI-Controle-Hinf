@@ -23,15 +23,15 @@ function [h,verif] = pertinence(xt)
 h = zeros(32,1);
 sum = 0;
 
-% Definindo valores da bolinha
-m = 0.13; % Massa da bolinha, em Kg
-R = 0.03; % Raio da bolinha, em m
-Ib = 2/5 * m * R^2; % Momento de inércia
+% Ball characteristics values
+m = 0.13; % Mass in Kg
+R = 0.03; % Radius in meters
+Ib = 2/5 * m * R^2; % Inertial Momentum
 
 
 Kv = m/(m+Ib/(R^2));
 
-% Definicao valores limite
+% extremal values definition
 dtheta1_min = -10;
 dtheta1_max = +10;
 dtheta2_min = -10;
@@ -45,7 +45,7 @@ Hi_min = Kv*dtheta1_min^2;     Hi_max = Kv*dtheta1_max^2;
 Hj_min = Kv*dtheta2_min^2;     Hj_max = Kv*dtheta2_max^2; 
 Hk_min = Kv*dtheta1_min*dtheta2_min;   Hk_max = Kv*dtheta1_max*dtheta2_max; 
 Hp_min = Kv*sincTheta1_min;     Hp_max = Kv*sincTheta1_max;
-Hq_min = Kv*sincTheta2_min;     Hq_max = Kv*sincTheta2_min;
+Hq_min = Kv*sincTheta2_min;     Hq_max = Kv*sincTheta2_max;
 
 %% Calculation of the pertinence values associated with each parameter
 
@@ -58,10 +58,10 @@ Hj(2) = 1-Hj(1);
 Hk(1) = (Hk_max - Kv*xt(4)*xt(8))/(Hk_max-Hk_min); % h3
 Hk(2) = 1-Hk(1);
 
-Hp(1) = (Hp_max - Kv*xt(3))/(Hp_max-Hp_min); % h4
+Hp(1) = (Hp_max - Kv*sin(xt(3))/xt(3))/(Hp_max-Hp_min); % h4
 Hp(2) = 1-Hp(1);
 
-Hq(1) = (Hq_max - Kv*xt(7))/(Hq_max-Hq_min); % h5
+Hq(1) = (Hq_max - Kv*sin(xt(7))/xt(7))/(Hq_max-Hq_min); % h5
 Hq(2) = 1-Hq(1);
 
 %% Calculates the pertinence values for the equivalent parameter "rho"

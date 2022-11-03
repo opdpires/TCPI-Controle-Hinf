@@ -12,14 +12,15 @@
 
 clear;clc;close all;
 
-% Definindo valores da bolinha
-m = 0.13; % Massa da bolinha, em Kg
-R = 0.03; % Raio da bolinha, em m
-Ib = 2/5 * m * R^2; % Momento de inércia
+% Ball characteristics values
+m = 0.13; % Mass in Kg
+R = 0.03; % Radius in meters
+Ib = 2/5 * m * R^2; % Inertial Momentum
+
 
 Kv = m/(m+Ib/(R^2));
 
-% Definicao valores limite
+% extremal values definition
 dtheta1_min = -10;
 dtheta1_max = +10;
 dtheta2_min = -10;
@@ -33,7 +34,7 @@ Hi_min = Kv*dtheta1_min^2;     Hi_max = Kv*dtheta1_max^2;
 Hj_min = Kv*dtheta2_min^2;     Hj_max = Kv*dtheta2_max^2; 
 Hk_min = Kv*dtheta1_min*dtheta2_min;   Hk_max = Kv*dtheta1_max*dtheta2_max; 
 Hp_min = Kv*sincTheta1_min;     Hp_max = Kv*sincTheta1_max;
-Hq_min = Kv*sincTheta2_min;     Hq_max = Kv*sincTheta2_min;
+Hq_min = Kv*sincTheta2_min;     Hq_max = Kv*sincTheta2_max;
 
 A{1} = [0        0        0        0        1 0 0 0;
         Hi_min   Hk_min   Hp_min   0        0 0 0 0;
@@ -382,28 +383,62 @@ out = q_LPV_Hinf_optimization(A, Bu, Bw, Cz, Dzu, Dzw);
 
 K = out.K;
 
+% TODO: definir os valores da perturbação
+w = [0;0]; %improviso
+
 x0 = [0.5; 0; 0; 0; 0.5; 0; 0; 0];
 
-[t,xs] = ode45(@(t,xs)TS_System(t,x,w,A,Bu,Bw,K), [0,10], x0);
+[t,xs] = ode45(@(t,xs)TS_System(t,xs,w,A,Bu,Bw,K), [0,10], x0);
 
 %% Graph of the evolution of the states
 
 figure(1)
-hold on
 
+subplot(2,2,1)
 plot(t, xs(:,1), 'b-', 'LineWidth', 1.5);
-plot(t, xs(:,2), 'r-', 'LineWidth', 1.5);
-% TODO: plotar outros estados de forma que a figura permaneca legivel
+hold on
+plot(t, xs(:,5), 'r-', 'LineWidth', 1.5);
+xlabel('$t (seconds)$','Interpreter','latex');
+ylabel('$x (meters)$','Interpreter','latex');
+lgd1 = legend('~P_1','~P_2','Interpreter','latex');
+set(lgd1,'Interpreter','latex');
+
+subplot(2,2,2)
+plot(t, xs(:,2), 'b-', 'LineWidth', 1.5);
+hold on
+plot(t, xs(:,6), 'r-', 'LineWidth', 1.5);
+xlabel('$t (seconds)$','Interpreter','latex');
+ylabel('$x (meters/second)$','Interpreter','latex');
+lgd2 = legend('~\dot{P}_1','~\dot{P}_2','Interpreter','latex');
+set(lgd2,'Interpreter','latex');
+
+subplot(2,2,3)
+plot(t, xs(:,3), 'b-', 'LineWidth', 1.5);
+hold on
+plot(t, xs(:,7), 'r-', 'LineWidth', 1.5);
+xlabel('$t (seconds)$','Interpreter','latex');
+ylabel('$x (radians)$','Interpreter','latex');
+lgd3 = legend('~\theta_1','~\theta_2','Interpreter','latex');
+set(lgd3,'Interpreter','latex');
+
+subplot(2,2,4)
+plot(t, xs(:,4), 'b-', 'LineWidth', 1.5);
+hold on
+plot(t, xs(:,8), 'r-', 'LineWidth', 1.5);
+xlabel('$t (seconds)$','Interpreter','latex');
+ylabel('$x (radians/second)$','Interpreter','latex');
+lgd4 = legend('~\dot{\theta}_1','~\dot{\theta}_2','Interpreter','latex');
+set(lgd4,'Interpreter','latex');
 
 % figure settings
-set(gca,'FontSize',14,'Fontname','Times New Roman');
-xlabel('$t(s)$','Interpreter','latex','FontSize',20);
-ylabel('$x(t)$','Interpreter','latex','FontSize',20);
-box on
-leg = legend('$~x_1$','$~x_2$','$~x_3$','$~x_4$','$~x_5$','$~x_6$','$~x_7$','$~x_8$');
-set(leg,'Interpreter','latex','FontSize',18);
-legend('boxoff')
-legend('Location','best')
+%set(gca,'FontSize',14,'Fontname','Times New Roman');
+%xlabel('$t(s)$','Interpreter','latex','FontSize',20);
+%ylabel('$x(t)$','Interpreter','latex','FontSize',20);
+%box on
+%leg = legend('$~x_1$','$~x_2$','$~x_3$','$~x_4$','$~x_5$','$~x_6$','$~x_7$','$~x_8$');
+%set(leg,'Interpreter','latex','FontSize',18);
+%legend('boxoff')
+%legend('Location','best')
 
 %% System Definition
 % calculate and return the next states of the system
