@@ -12,7 +12,7 @@
 % representation. An optimization problem is obtained and as we solve it,
 % we obtain the gain matrices.
 
-function out = q_LPV_Hinf_optimization(A, Bu, Bw, Cz, Dzu, Dzw)
+function out = q_LPV_Hinf_optimization(eps, A, Bu, Bw, Cz, Dzu, Dzw)
 % out is the output of the function. It contains, mainly, the gain matrix,
 % the value of the limit of the gain of the disturbance to the output and
 % also contains the value of the P matrix of the Lyapunov function.
@@ -44,6 +44,7 @@ for i=1:r
 end
 
 %% LMIs definition
+
 LMIs = [];
 	
 LMIs = [LMIs, X>=eps*eye(nx)];
@@ -54,7 +55,7 @@ end
     
 %% Optimization
 obj=[sigma];
-options=sdpsettings('verbose',0,'warning',1,'solver','mosek','showprogress',0);
+options=sdpsettings('verbose',0,'warning',1,'solver','sedumi','showprogress',0);
 out.sol = optimize(LMIs,obj,options);
 %warning('off','YALMIP: strict');
 out.p=min(checkset(LMIs));
@@ -63,17 +64,16 @@ out.variables=size(getvariables(LMIs),2);
 	
 out.LMIs=LMIs;
 
-%% Recovering the gain matrix
-
-%P = inv(value(X));
-P = eye(nx)/(value(X));
-
-for i=1:r
-    K{i} = value(Z{i})*P;
-end
-
 %% Output definition   
 if out.p>0 || out.sol.problem==0
+
+    P = inv(value(X));
+    P = eye(nx)/(value(X));
+
+    for i=1:r
+        K{i} = value(Z{i})*P;
+    end
+
     out.feas=1;
     out.P=P;
 	out.gamma=sqrt(value(sigma));

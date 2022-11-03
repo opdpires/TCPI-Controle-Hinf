@@ -11,7 +11,7 @@
 % representation.
 
 clear;clc;close all;
-
+eps = 1e-6;
 % Ball characteristics values
 m = 0.13; % Mass in Kg
 R = 0.03; % Radius in meters
@@ -21,20 +21,20 @@ Ib = 2/5 * m * R^2; % Inertial Momentum
 Kv = m/(m+Ib/(R^2));
 
 % extremal values definition
-dtheta1_min = -10;
-dtheta1_max = +10;
-dtheta2_min = -10;
-dtheta2_max = +10;
+dtheta1_min = -1;
+dtheta1_max = +1;
+dtheta2_min = -1;
+dtheta2_max = +1;
 sincTheta1_min = 0.988;
 sincTheta1_max = 1;
 sincTheta2_min = 0.988;
 sincTheta2_max = 1;
 
-Hi_min = Kv*dtheta1_min^2;     Hi_max = Kv*dtheta1_max^2;
-Hj_min = Kv*dtheta2_min^2;     Hj_max = Kv*dtheta2_max^2; 
+Hi_min = Kv*dtheta1_min^2;             Hi_max = Kv*dtheta1_max^2;
+Hj_min = Kv*dtheta2_min^2;             Hj_max = Kv*dtheta2_max^2; 
 Hk_min = Kv*dtheta1_min*dtheta2_min;   Hk_max = Kv*dtheta1_max*dtheta2_max; 
-Hp_min = Kv*sincTheta1_min;     Hp_max = Kv*sincTheta1_max;
-Hq_min = Kv*sincTheta2_min;     Hq_max = Kv*sincTheta2_max;
+Hp_min = Kv*sincTheta1_min;            Hp_max = Kv*sincTheta1_max;
+Hq_min = Kv*sincTheta2_min;            Hq_max = Kv*sincTheta2_max;
 
 A{1} = [0        0        0        0        1 0 0 0;
         Hi_min   Hk_min   Hp_min   0        0 0 0 0;
@@ -379,9 +379,13 @@ Dzw = zeros(8,2);
 
 %% Temporal simulation
 
-out = q_LPV_Hinf_optimization(A, Bu, Bw, Cz, Dzu, Dzw);
+out = q_LPV_Hinf_optimization(eps, A, Bu, Bw, Cz, Dzu, Dzw);
 
-K = out.K;
+if (out.sol.problem ~= 0)
+    out.sol.info
+
+else
+    K = out.K;
 
 % TODO: definir os valores da perturbação
 w = [0;0]; %improviso
@@ -429,16 +433,7 @@ xlabel('$t (seconds)$','Interpreter','latex');
 ylabel('$x (radians/second)$','Interpreter','latex');
 lgd4 = legend('~\dot{\theta}_1','~\dot{\theta}_2','Interpreter','latex');
 set(lgd4,'Interpreter','latex');
-
-% figure settings
-%set(gca,'FontSize',14,'Fontname','Times New Roman');
-%xlabel('$t(s)$','Interpreter','latex','FontSize',20);
-%ylabel('$x(t)$','Interpreter','latex','FontSize',20);
-%box on
-%leg = legend('$~x_1$','$~x_2$','$~x_3$','$~x_4$','$~x_5$','$~x_6$','$~x_7$','$~x_8$');
-%set(leg,'Interpreter','latex','FontSize',18);
-%legend('boxoff')
-%legend('Location','best')
+end
 
 %% System Definition
 % calculate and return the next states of the system
