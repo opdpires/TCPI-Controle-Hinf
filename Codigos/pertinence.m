@@ -31,12 +31,21 @@ Ib = 2/5 * m * r^2; % Momento de inércia
 
 Kv = m/(m+Ib/(R^2));
 
-% TODO: definir esses valores limite
-Hi_min = Kv*0;     Hi_max = Kv*0;
-Hj_min = Kv*0;     Hj_max = Kv*0; 
-Hk_min = Kv*0*0;   Hk_max = Kv*0*0; 
-Hp_min = Kv*0;     Hp_max = Kv*0;
-Hq_min = Kv*0;     Hq_max = Kv*0;
+% Definicao valores limite
+dtheta1_min = -10;
+dtheta1_max = +10;
+dtheta2_min = -10;
+dtheta2_max = +10;
+sincTheta1_min = 0.988;
+sincTheta1_max = 1;
+sincTheta2_min = 0.988;
+sincTheta2_max = 1;
+
+Hi_min = Kv*dtheta1_min^2;     Hi_max = Kv*dtheta1_max^2;
+Hj_min = Kv*dtheta2_min^2;     Hj_max = Kv*dtheta2_max^2; 
+Hk_min = Kv*dtheta1_min*dtheta2_min;   Hk_max = Kv*dtheta1_max*dtheta2_max; 
+Hp_min = Kv*sincTheta1_min;     Hp_max = Kv*sincTheta1_max;
+Hq_min = Kv*sincTheta2_min;     Hq_max = Kv*sincTheta2_min;
 
 %% Calculation of the pertinence values associated with each parameter
 
