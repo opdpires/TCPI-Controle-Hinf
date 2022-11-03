@@ -23,10 +23,11 @@ function [h,verif] = pertinence(xt)
 h = zeros(32,1);
 sum = 0;
 
-% TODO: definir valores da bolinha
-m = 0;
-Ib = 0;
-R = 0;
+% Definindo valores da bolinha
+m = 0.13; % Massa da bolinha, em Kg
+R = 0.03; % Raio da bolinha, em m
+Ib = 2/5 * m * r^2; % Momento de inércia
+
 
 Kv = m/(m+Ib/(R^2));
 
@@ -56,15 +57,15 @@ Hq(2) = 1-Hq(1);
 
 %% Calculates the pertinence values for the equivalent parameter "rho"
 
-h(1) = Hi(1)*Hj(1)*Hk(1)*Hp(1)*Hq(1);
-h(2) = Hi(1)*Hj(1)*Hk(1)*Hp(1)*Hq(2);
-h(3) = Hi(1)*Hj(1)*Hk(1)*Hp(2)*Hq(1);
-h(4) = Hi(1)*Hj(1)*Hk(1)*Hp(2)*Hq(2);
-h(5) = Hi(1)*Hj(1)*Hk(2)*Hp(1)*Hq(1);
-h(6) = Hi(1)*Hj(1)*Hk(2)*Hp(1)*Hq(2);
-h(7) = Hi(1)*Hj(1)*Hk(2)*Hp(2)*Hq(1);
-h(8) = Hi(1)*Hj(1)*Hk(2)*Hp(2)*Hq(2);
-h(9) = Hi(1)*Hj(2)*Hk(1)*Hp(1)*Hq(1);
+h(1)  = Hi(1)*Hj(1)*Hk(1)*Hp(1)*Hq(1);
+h(2)  = Hi(1)*Hj(1)*Hk(1)*Hp(1)*Hq(2);
+h(3)  = Hi(1)*Hj(1)*Hk(1)*Hp(2)*Hq(1);
+h(4)  = Hi(1)*Hj(1)*Hk(1)*Hp(2)*Hq(2);
+h(5)  = Hi(1)*Hj(1)*Hk(2)*Hp(1)*Hq(1);
+h(6)  = Hi(1)*Hj(1)*Hk(2)*Hp(1)*Hq(2);
+h(7)  = Hi(1)*Hj(1)*Hk(2)*Hp(2)*Hq(1);
+h(8)  = Hi(1)*Hj(1)*Hk(2)*Hp(2)*Hq(2);
+h(9)  = Hi(1)*Hj(2)*Hk(1)*Hp(1)*Hq(1);
 h(10) = Hi(1)*Hj(2)*Hk(1)*Hp(1)*Hq(2);
 h(11) = Hi(1)*Hj(2)*Hk(1)*Hp(2)*Hq(1);
 h(12) = Hi(1)*Hj(2)*Hk(1)*Hp(2)*Hq(2);
