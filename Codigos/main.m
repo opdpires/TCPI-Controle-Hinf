@@ -11,6 +11,8 @@
 % representation.
 
 clear;clc;close all;
+
+g = 9.8;
 eps = 1e-6;
 % Ball characteristics values
 m = 0.13; % Mass in Kg
@@ -21,9 +23,9 @@ Ib = 2/5 * m * R^2; % Inertial Momentum
 Kv = m/(m+Ib/(R^2));
 
 % extremal values definition
-dtheta1_min = -1;
+dtheta1_min = 0;
 dtheta1_max = +1;
-dtheta2_min = -1;
+dtheta2_min = 0;
 dtheta2_max = +1;
 sincTheta1_min = 0.988;
 sincTheta1_max = 1;
@@ -33,8 +35,8 @@ sincTheta2_max = 1;
 Hi_min = Kv*dtheta1_min^2;             Hi_max = Kv*dtheta1_max^2;
 Hj_min = Kv*dtheta2_min^2;             Hj_max = Kv*dtheta2_max^2; 
 Hk_min = Kv*dtheta1_min*dtheta2_min;   Hk_max = Kv*dtheta1_max*dtheta2_max; 
-Hp_min = Kv*sincTheta1_min;            Hp_max = Kv*sincTheta1_max;
-Hq_min = Kv*sincTheta2_min;            Hq_max = Kv*sincTheta2_max;
+Hp_min = Kv*g*sincTheta1_min;            Hp_max = Kv*g*sincTheta1_max;
+Hq_min = Kv*g*sincTheta2_min;            Hq_max = Kv*g*sincTheta2_max;
 
 A{1} = [0        0        0        0        1 0 0 0;
         Hi_min   Hk_min   Hp_min   0        0 0 0 0;
@@ -442,9 +444,11 @@ function dx = TS_System(t,x,w,A,Bu,Bw,K)
 Ax = zeros(8);
 Kx = zeros(1,8);
 
+[h,verif] = pertinence(x);
+
 for i=1:32
-    Ax = Ax + pertinence(x)*A{i};
-    Kx = Kx + pertinence(x)*K{i};
+    Ax = Ax + h(i)*A{i};
+    Kx = Kx + h(i)*K{i};
 end
 
 u = Kx*x;

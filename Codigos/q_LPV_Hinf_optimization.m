@@ -47,7 +47,7 @@ end
 
 LMIs = [];
 	
-LMIs = [LMIs, X>=eps*eye(nx)];
+LMIs = [LMIs, X>=1e-12*eye(nx)];
 	
 for i=1:r
     LMIs = [LMIs, Gamma{i} <= -eps*eye(size(Gamma{1}))];
@@ -55,7 +55,7 @@ end
     
 %% Optimization
 obj=[sigma];
-options=sdpsettings('verbose',0,'warning',1,'solver','sedumi','showprogress',0);
+options=sdpsettings('verbose',0,'warning',1,'solver','mosek','showprogress',0);
 out.sol = optimize(LMIs,obj,options);
 %warning('off','YALMIP: strict');
 out.p=min(checkset(LMIs));

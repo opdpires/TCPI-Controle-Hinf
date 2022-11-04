@@ -22,6 +22,7 @@ function [h,verif] = pertinence(xt)
 %% Variables inicialization
 h = zeros(32,1);
 sum = 0;
+g = 9.8;
 
 % Ball characteristics values
 m = 0.13; % Mass in Kg
@@ -32,10 +33,10 @@ Ib = 2/5 * m * R^2; % Inertial Momentum
 Kv = m/(m+Ib/(R^2));
 
 % extremal values definition
-dtheta1_min = -10;
-dtheta1_max = +10;
-dtheta2_min = -10;
-dtheta2_max = +10;
+dtheta1_min = -0.1;
+dtheta1_max = +0.1;
+dtheta2_min = -0.1;
+dtheta2_max = +0.1;
 sincTheta1_min = 0.988;
 sincTheta1_max = 1;
 sincTheta2_min = 0.988;
@@ -44,8 +45,8 @@ sincTheta2_max = 1;
 Hi_min = Kv*dtheta1_min^2;     Hi_max = Kv*dtheta1_max^2;
 Hj_min = Kv*dtheta2_min^2;     Hj_max = Kv*dtheta2_max^2; 
 Hk_min = Kv*dtheta1_min*dtheta2_min;   Hk_max = Kv*dtheta1_max*dtheta2_max; 
-Hp_min = Kv*sincTheta1_min;     Hp_max = Kv*sincTheta1_max;
-Hq_min = Kv*sincTheta2_min;     Hq_max = Kv*sincTheta2_max;
+Hp_min = Kv*g*sincTheta1_min;     Hp_max = Kv*g*sincTheta1_max;
+Hq_min = Kv*g*sincTheta2_min;     Hq_max = Kv*g*sincTheta2_max;
 
 %% Calculation of the pertinence values associated with each parameter
 
