@@ -46,9 +46,20 @@ end
 %% LMIs definition
 
 LMIs = [];
+
+% LMI condition to define a limit for the values of the gain matriz
+xi = 1e-2;
+for i = 1:r
+    XI{i} = [xi*xi*eye(nu) Z{i};
+            Z{i}'            eye(nx)];
+
+    LMIs = [LMIs, XI{i} >= zeros(nu+nx)];
+end
+
+% Lyapunov function must be positive defined	
+LMIs = [LMIs, X>=eps*eye(nx)];
 	
-LMIs = [LMIs, X>=1e-12*eye(nx)];
-	
+% main H infinity LMI condition for each vertex of the politope
 for i=1:r
     LMIs = [LMIs, Gamma{i} <= -eps*eye(size(Gamma{1}))];
 end
@@ -71,11 +82,13 @@ if out.p>0 || out.sol.problem==0
     P = eye(nx)/(value(X));
 
     for i=1:r
+        Zx{i} = value(Z{i});
         K{i} = value(Z{i})*P;
     end
 
     out.feas=1;
     out.P=P;
+    out.Z = Zx;
 	out.gamma=sqrt(value(sigma));
 	out.K=K;
 else

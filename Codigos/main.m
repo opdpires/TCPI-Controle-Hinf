@@ -14,29 +14,29 @@ clear;clc;close all;
 
 g = 9.8;
 eps = 1e-6;
+
 % Ball characteristics values
 m = 0.13; % Mass in Kg
 R = 0.03; % Radius in meters
 Ib = 2/5 * m * R^2; % Inertial Momentum
 
-
 Kv = m/(m+Ib/(R^2));
 
 % extremal values definition
-dtheta1_min = 0;
-dtheta1_max = +1;
-dtheta2_min = 0;
-dtheta2_max = +1;
-sincTheta1_min = 0.988;
-sincTheta1_max = 1;
-sincTheta2_min = 0.988;
-sincTheta2_max = 1;
+dtheta1_min = -0.1;     dtheta1_max = +0.1;
+dtheta2_min = -0.1;     dtheta2_max = +0.1;
 
-Hi_min = Kv*dtheta1_min^2;             Hi_max = Kv*dtheta1_max^2;
-Hj_min = Kv*dtheta2_min^2;             Hj_max = Kv*dtheta2_max^2; 
-Hk_min = Kv*dtheta1_min*dtheta2_min;   Hk_max = Kv*dtheta1_max*dtheta2_max; 
-Hp_min = Kv*g*sincTheta1_min;            Hp_max = Kv*g*sincTheta1_max;
-Hq_min = Kv*g*sincTheta2_min;            Hq_max = Kv*g*sincTheta2_max;
+dtheta1_2_min = 0;                          dtheta1_2_max = dtheta1_max^2;
+dtheta2_2_min = 0;                          dtheta2_2_max = dtheta2_max^2;
+dth1th2_min = -dtheta1_max*dtheta2_max;     dth1th2_max = +dtheta1_max*dtheta2_max;
+sincTheta1_min = 0.988;                     sincTheta1_max = 1;
+sincTheta2_min = 0.988;                     sincTheta2_max = 1;
+
+Hi_min = Kv*dtheta1_2_min;             Hi_max = Kv*dtheta1_2_max;
+Hj_min = Kv*dtheta2_2_min;             Hj_max = Kv*dtheta2_2_max; 
+Hk_min = Kv*dth1th2_min;               Hk_max = Kv*dth1th2_max; 
+Hp_min = Kv*g*sincTheta1_min;          Hp_max = Kv*g*sincTheta1_max;
+Hq_min = Kv*g*sincTheta2_min;          Hq_max = Kv*g*sincTheta2_max;
 
 A{1} = [0        0        0        0        1 0 0 0;
         Hi_min   Hk_min   Hp_min   0        0 0 0 0;
@@ -357,21 +357,21 @@ A{32} = [0        0        0        0        1 0 0 0;
         0        0        0        0        0 0 0 1;
         0        0        0        0        0 0 0 0];
 
-Bu = [0 0;
-      0 0;
-      0 0;
+Bu = [1 0;%0 0
+      1 0;%0 0
+      1 0;%0 0
       1 0;
-      0 0;
-      0 0;
-      0 0;
+      0 1;%0 0
+      0 1;%0 0
+      0 1;%0 0
       0 1];
 
 Bw = [0 0;
-      1 0;
+      0 0;%1 0;
       0 0;
       0 0;
       0 0;
-      0 1;
+      0 0;%0 1;
       0 0;
       0 0];
 
@@ -392,9 +392,9 @@ else
 % TODO: definir os valores da perturbação
 w = [0;0]; %improviso
 
-x0 = [0.5; 0; 0; 0; 0.5; 0; 0; 0];
+x0 = [0.01; 0.001; 0.001; 0.001; 0.01; 0.001; 0.001; 0.001];
 
-[t,xs] = ode45(@(t,xs)TS_System(t,xs,w,A,Bu,Bw,K), [0,10], x0);
+[t,xs] = ode45(@(t,xs)TS_System(t,xs,w,A,Bu,Bw,K), [0,100], x0);
 
 %% Graph of the evolution of the states
 
@@ -404,37 +404,49 @@ subplot(2,2,1)
 plot(t, xs(:,1), 'b-', 'LineWidth', 1.5);
 hold on
 plot(t, xs(:,5), 'r-', 'LineWidth', 1.5);
-xlabel('$t (seconds)$','Interpreter','latex');
-ylabel('$x (meters)$','Interpreter','latex');
-lgd1 = legend('~P_1','~P_2','Interpreter','latex');
-set(lgd1,'Interpreter','latex');
+xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+ylabel('$x(m)$','Interpreter','latex','FontSize',16);
+lgd1 = legend('$p_{x}$','$p_{y}$');
+set(lgd1,'Interpreter','latex','FontSize',16);
+legend('boxoff')
+legend('Location','best')
+grid minor
 
 subplot(2,2,2)
 plot(t, xs(:,2), 'b-', 'LineWidth', 1.5);
 hold on
 plot(t, xs(:,6), 'r-', 'LineWidth', 1.5);
-xlabel('$t (seconds)$','Interpreter','latex');
-ylabel('$x (meters/second)$','Interpreter','latex');
-lgd2 = legend('~\dot{P}_1','~\dot{P}_2','Interpreter','latex');
-set(lgd2,'Interpreter','latex');
+xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+ylabel('$x(m/s)$','Interpreter','latex','FontSize',16);
+lgd2 = legend('$\dot{p}_x$','$\dot{p}_y$');
+set(lgd2,'Interpreter','latex','FontSize',16);
+legend('boxoff')
+legend('Location','best')
+grid minor
 
 subplot(2,2,3)
 plot(t, xs(:,3), 'b-', 'LineWidth', 1.5);
 hold on
 plot(t, xs(:,7), 'r-', 'LineWidth', 1.5);
-xlabel('$t (seconds)$','Interpreter','latex');
-ylabel('$x (radians)$','Interpreter','latex');
-lgd3 = legend('~\theta_1','~\theta_2','Interpreter','latex');
-set(lgd3,'Interpreter','latex');
+xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+ylabel('$x(rad)$','Interpreter','latex','FontSize',16);
+lgd3 = legend('$\theta_x$','$\theta_y$');
+set(lgd3,'Interpreter','latex','FontSize',16);
+legend('boxoff')
+legend('Location','best')
+grid minor
 
 subplot(2,2,4)
 plot(t, xs(:,4), 'b-', 'LineWidth', 1.5);
 hold on
 plot(t, xs(:,8), 'r-', 'LineWidth', 1.5);
-xlabel('$t (seconds)$','Interpreter','latex');
-ylabel('$x (radians/second)$','Interpreter','latex');
-lgd4 = legend('~\dot{\theta}_1','~\dot{\theta}_2','Interpreter','latex');
-set(lgd4,'Interpreter','latex');
+xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+ylabel('$x(rad/s)$','Interpreter','latex','FontSize',16);
+lgd4 = legend('$\dot{\theta}_x$','$\dot{\theta}_y$');
+set(lgd4,'Interpreter','latex','FontSize',16);
+legend('boxoff')
+legend('Location','best')
+grid minor
 end
 
 %% System Definition
@@ -444,15 +456,19 @@ function dx = TS_System(t,x,w,A,Bu,Bw,K)
 Ax = zeros(8);
 Kx = zeros(1,8);
 
+
 [h,verif] = pertinence(x);
 
-for i=1:32
-    Ax = Ax + h(i)*A{i};
-    Kx = Kx + h(i)*K{i};
+if (verif~=1)
+    disp("It is not a simplex")
+else
+    for i=1:32
+        Ax = Ax + h(i)*A{i};
+        Kx = Kx + h(i)*K{i};
+    end
+
+    u = Kx*x;
+
+    dx = Ax*x + Bu*u + Bw*w;
 end
-
-u = Kx*x;
-
-dx = Ax*x + Bu*u + Bw*w;
-
 end
