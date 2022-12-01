@@ -48,7 +48,7 @@ end
 LMIs = [];
 
 % LMI condition to define a limit for the values of the gain matriz
-xi = 1e-2;
+xi = 1e-1;
 for i = 1:r
     XI{i} = [xi*xi*eye(nu) Z{i};
             Z{i}'            eye(nx)];

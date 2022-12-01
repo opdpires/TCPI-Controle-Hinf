@@ -35,84 +35,83 @@ Hi_min = Kv*dtheta1_2_min;             Hi_max = Kv*dtheta1_2_max;
 Hj_min = Kv*dtheta2_2_min;             Hj_max = Kv*dtheta2_2_max; 
 Hk_min = Kv*dth1th2_min;               Hk_max = Kv*dth1th2_max;
 
-A{1} = [0        0        0        0        1 0 0 0;
-        Hi_min   Hk_min   Kv*g       0        0 0 0 0;
-        0        0        0        0        0 0 1 0;
-        0        0        0        0        0 0 0 0;
-        0        0        0        0        0 1 0 0;
-        Hk_min   Hj_min   0        Kv*g       0 0 0 0; 
-        0        0        0        0        0 0 0 1;
-        0        0        0        0        0 0 0 0];
+A{1} = [0        1        0        0        0      0   0    0;
+        Hi_min   0        Kv*g     0        Hk_min 0   0    0;
+        0        0        0        1        0      0   0    0;
+        0        0        0        0        0      0   0    0;
+        0        0        0        0        0      1   0    0;
+        Hk_min   0        0        0        Hj_min 0   Kv*g 0; 
+        0        0        0        0        0      0   0    1;
+        0        0        0        0        0      0   0    0];
             
 
-A{2} = [0        0        0        0        1 0 0 0;
-        Hi_min   Hk_max   Kv*g       0        0 0 0 0;
-        0        0        0        0        0 0 1 0;
-        0        0        0        0        0 0 0 0;
-        0        0        0        0        0 1 0 0;
-        Hk_max   Hj_min   0        Kv*g       0 0 0 0; 
-        0        0        0        0        0 0 0 1;
-        0        0        0        0        0 0 0 0];
+A{2} = [0        1        0        0        0      0   0    0;
+        Hi_min   0        Kv*g     0        Hk_max 0   0    0;
+        0        0        0        1        0      0   0    0;
+        0        0        0        0        0      0   0    0;
+        0        0        0        0        0      1   0    0;
+        Hk_max   0        0        0        Hj_min 0   Kv*g 0; 
+        0        0        0        0        0      0   0    1;
+        0        0        0        0        0      0   0    0];
             
 
-A{3} = [0        0        0        0        1 0 0 0;
-        Hi_min   Hk_min   Kv*g       0        0 0 0 0;
-        0        0        0        0        0 0 1 0;
-        0        0        0        0        0 0 0 0;
-        0        0        0        0        0 1 0 0;
-        Hk_min   Hj_max   0        Kv*g       0 0 0 0; 
-        0        0        0        0        0 0 0 1;
-        0        0        0        0        0 0 0 0];
+A{3} = [0        1        0        0        0      0   0    0;
+        Hi_min   0        Kv*g     0        Hk_min 0   0    0;
+        0        0        0        1        0      0   0    0;
+        0        0        0        0        0      0   0    0;
+        0        0        0        0        0      1   0    0;
+        Hk_min   0        0        0        Hj_max 0   Kv*g 0; 
+        0        0        0        0        0      0   0    1;
+        0        0        0        0        0      0   0    0];
             
 
-A{4} = [0        0        0        0        1 0 0 0;
-        Hi_min   Hk_max   Kv*g       0        0 0 0 0;
-        0        0        0        0        0 0 1 0;
-        0        0        0        0        0 0 0 0;
-        0        0        0        0        0 1 0 0;
-        Hk_max   Hj_max   0        Kv*g       0 0 0 0; 
-        0        0        0        0        0 0 0 1;
-        0        0        0        0        0 0 0 0];
+A{4} = [0        1        0        0        0      0   0    0;
+        Hi_min   0        Kv*g     0        Hk_max 0   0    0;
+        0        0        0        1        0      0   0    0;
+        0        0        0        0        0      0   0    0;
+        0        0        0        0        0      1   0    0;
+        Hk_max   0        0        0        Hj_max 0   Kv*g 0; 
+        0        0        0        0        0      0   0    1;
+        0        0        0        0        0      0   0    0];
             
 
-A{5} = [0        0        0        0        1 0 0 0;
-        Hi_max   Hk_min   Kv*g       0        0 0 0 0;
-        0        0        0        0        0 0 1 0;
-        0        0        0        0        0 0 0 0;
-        0        0        0        0        0 1 0 0;
-        Hk_min   Hj_min   0        Kv*g       0 0 0 0; 
-        0        0        0        0        0 0 0 1;
-        0        0        0        0        0 0 0 0];
+A{5} = [0        1        0        0        0      0   0    0;
+        Hi_max   0        Kv*g     0        Hk_min 0   0    0;
+        0        0        0        1        0      0   0    0;
+        0        0        0        0        0      0   0    0;
+        0        0        0        0        0      1   0    0;
+        Hk_min   0        0        0        Hj_min 0   Kv*g 0; 
+        0        0        0        0        0      0   0    1;
+        0        0        0        0        0      0   0    0];
+
+A{6} = [0        1        0        0        0      0   0    0;
+        Hi_max   0        Kv*g     0        Hk_max 0   0    0;
+        0        0        0        1        0      0   0    0;
+        0        0        0        0        0      0   0    0;
+        0        0        0        0        0      1   0    0;
+        Hk_max   0        0        0        Hj_min 0   Kv*g 0; 
+        0        0        0        0        0      0   0    1;
+        0        0        0        0        0      0   0    0];
             
 
-A{6} = [0        0        0        0        1 0 0 0;
-        Hi_max   Hk_max   Kv*g       0        0 0 0 0;
-        0        0        0        0        0 0 1 0;
-        0        0        0        0        0 0 0 0;
-        0        0        0        0        0 1 0 0;
-        Hk_max   Hj_min   0        Kv*g       0 0 0 0; 
-        0        0        0        0        0 0 0 1;
-        0        0        0        0        0 0 0 0];
+A{7} = [0        1        0        0        0      0   0    0;
+        Hi_max   0        Kv*g     0        Hk_min 0   0    0;
+        0        0        0        1        0      0   0    0;
+        0        0        0        0        0      0   0    0;
+        0        0        0        0        0      1   0    0;
+        Hk_min   0        0        0        Hj_max 0   Kv*g 0; 
+        0        0        0        0        0      0   0    1;
+        0        0        0        0        0      0   0    0];
             
 
-A{7} = [0        0        0        0        1 0 0 0;
-        Hi_max   Hk_min   Kv*g       0        0 0 0 0;
-        0        0        0        0        0 0 1 0;
-        0        0        0        0        0 0 0 0;
-        0        0        0        0        0 1 0 0;
-        Hk_min   Hj_max   0        Kv*g      0 0 0 0; 
-        0        0        0        0        0 0 0 1;
-        0        0        0        0        0 0 0 0];
-            
-
-A{8} = [0        0        0        0        1 0 0 0;
-        Hi_max   Hk_max   Kv*g       0        0 0 0 0;
-        0        0        0        0        0 0 1 0;
-        0        0        0        0        0 0 0 0;
-        0        0        0        0        0 1 0 0;
-        Hk_max   Hj_max   0        Kv*g       0 0 0 0; 
-        0        0        0        0        0 0 0 1;
-        0        0        0        0        0 0 0 0];
+A{8} = [0        1        0        0        0      0   0    0;
+        Hi_max   0        Kv*g     0        Hk_max 0   0    0;
+        0        0        0        1        0      0   0    0;
+        0        0        0        0        0      0   0    0;
+        0        0        0        0        0      1   0    0;
+        Hk_min   0        0        0        Hj_max 0   Kv*g 0; 
+        0        0        0        0        0      0   0    1;
+        0        0        0        0        0      0   0    0];
 
 Bu = [0 0;
       0 0;
@@ -124,11 +123,11 @@ Bu = [0 0;
       0 1];
 
 Bw = [0 0;
-      1 0;
+      1 0;%
       0 0;
       0 0;
       0 0;
-      0 1;
+      0 1;%
       0 0;
       0 0];
 
@@ -142,11 +141,10 @@ out = q_LPV_Hinf_optimization(eps, A, Bu, Bw, Cz, Dzu, Dzw);
 
 if (out.sol.problem ~= 0)
     out.sol.info
-
 else
     K = out.K;
 
-x0 = [0.05; 0.005; 0.005; 0; -0.05; -0.005; -0.005; 0];
+x0 = [0.05; 0; 0; 0; -0.05; 0; 0; 0];
 
 [t,xs] = ode45(@(t,xs)TS_System(t,xs,A,Bu,Bw,K), [0:0.001:30], x0);
 
@@ -201,6 +199,15 @@ set(lgd4,'Interpreter','latex','FontSize',16);
 legend('boxoff')
 legend('Location','best')
 grid minor
+
+figure(2)
+plot3(xs(:,1),xs(:,5),t)
+%axis([-0.015,0.015,-0.015,0.015])
+xlabel('$p_x (m)$','Interpreter','latex','FontSize',16);
+ylabel('$p_y (m)$','Interpreter','latex','FontSize',16);
+zlabel('$t(s)$','Interpreter','latex','FontSize',16);
+grid minor
+
 end
 
 for i = 1:8
@@ -220,8 +227,10 @@ Kx = zeros(1,8);
 if t < 10
     w = [0;0];
 else
-     w = exp(-0.25*t)*[sin(t);cos(t)];
+    w = exp(-0.25*t)*[sin(t);cos(t)];
 end
+
+xref = [0;0;0;0;0;0;0;0];
 
 [h,verif] = pertinence_8_vertices(x);
 
@@ -233,8 +242,8 @@ else
         Kx = Kx + h(i)*K{i};
     end
 
-    u = Kx*x;
+    u = Kx*(x-xref);
 
-    dx = Ax*x + Bu*u + Bw*w;
+    dx = Ax*(x-xref) + Bu*u + Bw*w;
 end
 end

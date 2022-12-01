@@ -73,8 +73,10 @@ for i=1:8
     sum = sum + h(i);
 end
 
+fprintf("sum = %d\n",sum)
+
 % verif == 1 -> it is a simplex
 % verif == 0 -> there's something wrong (it's not a simplex)
-verif = (sum < 1.00001 && sum > 0.99999);
+verif = (sum < 1.01 && sum > 0.99);
 
 end
