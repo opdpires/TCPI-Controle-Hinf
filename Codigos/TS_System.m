@@ -26,7 +26,7 @@ Kx = zeros(1,8);
 % xref = [0.01*sin(t);0;0;0;0.01*cos(t);0;0;0];
 xref = [ref_px;0;0;0;ref_py;0;0;0];
 
-[h,verif] = pertinence_8_vertices(x);
+[h,verif] = pertinence(x);
 
 if (verif~=1)
     disp("It is not a simplex")
