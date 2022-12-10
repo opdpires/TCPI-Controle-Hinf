@@ -1,0 +1,110 @@
+% authors: Pedro Otávio Fonseca Pires <piresopd@gmail.com>
+%          Hugo Ferreira Marques
+%          Gabriela Gonçalves Amorim de Oliveira
+%
+% created on: Nov 11, 2022
+%
+% file: main.m
+%
+% brief: this file holds the simulation of the "ball on the plate" system
+% with the proposed controller using H infinity control and TS-Fuzzy model
+% representation.
+
+clear;clc;close all;
+
+%% Initializations
+
+eps = 1e-4; % related to the module of the P matrix on the Lyapunov function condition
+
+[Kv,g,Hi_min,Hi_max,Hj_min,Hj_max,Hk_min,Hk_max] = def_params();
+
+[A,Bu,Bw,Cz,Dzu,Dzw] = system_definition(Hi_min,Hi_max,Hj_min,Hj_max,Hk_min,Hk_max,Kv,g);
+
+%% Temporal simulation
+
+out = q_LPV_Hinf_optimization(eps, A, Bu, Bw, Cz, Dzu, Dzw);
+
+if (out.sol.problem ~= 0)
+    out.sol.info
+else
+    K = out.K;
+    
+    % Control values
+    x0 = [0.05; 0; 0; 0; -0.05; 0; 0; 0; 0; 0]; % Initial condition
+    tspan = 0:0.001:50;
+    ref_px = 0; % px reference
+    ref_py = 0; % py reference
+
+    [t,xs] = ode45(@(t,xs)TS_System(t,xs,A,Bu,Bw,K,ref_px,ref_py),tspan, x0);
+
+%% Graph of the evolution of the states
+
+figure(1)
+
+subplot(2,2,1)
+plot(t, xs(:,1), 'b-', 'LineWidth', 1.5);
+hold on
+plot(t, xs(:,5), 'r-', 'LineWidth', 1.5);
+xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+ylabel('$x(m)$','Interpreter','latex','FontSize',16);
+lgd1 = legend('$p_{x}$','$p_{y}$');
+set(lgd1,'Interpreter','latex','FontSize',16);
+legend('boxoff')
+legend('Location','best')
+title('Control Signal')
+grid minor
+
+subplot(2,2,2)
+plot(t, xs(:,2), 'b-', 'LineWidth', 1.5);
+hold on
+plot(t, xs(:,6), 'r-', 'LineWidth', 1.5);
+xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+ylabel('$x(m/s)$','Interpreter','latex','FontSize',16);
+lgd2 = legend('$\dot{p}_x$','$\dot{p}_y$');
+set(lgd2,'Interpreter','latex','FontSize',16);
+legend('boxoff')
+legend('Location','best')
+title('Control Signal')
+grid minor
+
+subplot(2,2,3)
+plot(t, xs(:,3), 'b-', 'LineWidth', 1.5);
+hold on
+plot(t, xs(:,7), 'r-', 'LineWidth', 1.5);
+xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+ylabel('$x(rad)$','Interpreter','latex','FontSize',16);
+lgd3 = legend('$\theta_x$','$\theta_y$');
+set(lgd3,'Interpreter','latex','FontSize',16);
+legend('boxoff')
+legend('Location','best')
+title('Control Signal')
+grid minor
+
+subplot(2,2,4)
+plot(t, xs(:,4), 'b-', 'LineWidth', 1.5);
+hold on
+plot(t, xs(:,8), 'r-', 'LineWidth', 1.5);
+xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+ylabel('$x(rad/s)$','Interpreter','latex','FontSize',16);
+lgd4 = legend('$\dot{\theta}_x$','$\dot{\theta}_y$');
+set(lgd4,'Interpreter','latex','FontSize',16);
+legend('boxoff')
+legend('Location','best')
+title('Control Signal')
+grid minor
+
+% Plotting the control signal
+figure(2)
+plot(t, xs(:,9), 'b-', 'LineWidth', 1.5);
+hold on
+plot(t, xs(:,10), 'r-', 'LineWidth', 1.5);
+xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+ylabel('$x(rad^2/s)$','Interpreter','latex','FontSize',16);
+lgd4 = legend('$\ddot{\theta}_x$','$\ddot{\theta}_y$');
+set(lgd4,'Interpreter','latex','FontSize',16);
+legend('boxoff');
+legend('Location','best');
+title('Control Signal')
+grid minor
+
+end

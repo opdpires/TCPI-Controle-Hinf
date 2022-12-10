@@ -4,12 +4,12 @@
 %
 % created on: Nov 11, 2022
 %
-% file: pertinence_8_vertices.m
+% file: pertinence.m
 %
 % brief: this function calculates the pertinence values of the actual
 % states of the system to each vertex of the politope.
 
-function [h,verif] = pertinence_8_vertices(xt)
+function [h,verif] = pertinence(xt)
 % h is the pertinence vector. Each vertex is associated with a pertinence value. 
 %
 % xt is the state vector. The states that are associated with a parameter
@@ -33,8 +33,8 @@ Ib = 2/5 * m * R^2; % Inertial Momentum
 Kv = m/(m+Ib/(R^2));
 
 % extremal values definition
-dtheta1_min = -0.1;     dtheta1_max = +0.1;
-dtheta2_min = -0.1;     dtheta2_max = +0.1;
+dtheta1_min = -1;     dtheta1_max = +1;
+dtheta2_min = -1;     dtheta2_max = +1;
 
 dtheta1_2_min = 0;                          dtheta1_2_max = dtheta1_max^2;
 dtheta2_2_min = 0;                          dtheta2_2_max = dtheta2_max^2;
@@ -72,8 +72,6 @@ h(8)  = Hi(2)*Hj(2)*Hk(2);
 for i=1:8
     sum = sum + h(i);
 end
-
-fprintf("sum = %d\n",sum)
 
 % verif == 1 -> it is a simplex
 % verif == 0 -> there's something wrong (it's not a simplex)
