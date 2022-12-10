@@ -22,11 +22,9 @@ Kx = zeros(1,8);
 %     w = exp(-0.25*t)*[sin(t);cos(t)];
 % end
 
-% xref = [0.;0;0;0;0;0;0;0];
-% xref = [0.01*sin(t);0;0;0;0.01*cos(t);0;0;0];
 xref = [ref_px;0;0;0;ref_py;0;0;0];
 
-[h,verif] = pertinence(x);
+[h,verif] = pertinence(x(1:8));
 
 if (verif~=1)
     disp("It is not a simplex")
@@ -36,8 +34,14 @@ else
         Kx = Kx + h(i)*K{i};
     end
 
-    u = Kx*(x-xref);
+    u = Kx*(x(1:8)-xref);
+    % Saving control signals to dx variable to get it later
+    
 
-    dx = Ax*(x-xref) + Bu*u + Bw*w;
+
+    dx = Ax*(x(1:8)-xref) + Bu*u + Bw*w;
+    dx(9) = u(1); 
+    dx(10) = u(2);
+
 end
 end
