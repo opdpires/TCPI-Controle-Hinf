@@ -14,7 +14,7 @@ clear;clc;close all;
 
 parameters; % Load parameters constants
 
-eps = 1e-5;
+eps = 1e-4;
 
 
 % Building space state matrices
@@ -117,6 +117,20 @@ else
     grid minor
     xlim([-0.01 0.01])
     ylim([-0.01 0.01])
+
+    % Plotando sinal de controle
+    figure(3)
+    plot(t, xs(:,9), 'b-', 'LineWidth', 1.5);
+    hold on
+    plot(t, xs(:,10), 'r-', 'LineWidth', 1.5);
+    xlabel('$t(seconds)$','Interpreter','latex','FontSize',16);
+    ylabel('$x(rad^2/s)$','Interpreter','latex','FontSize',16);
+    lgd4 = legend('$\ddot{\theta}_x$','$\ddot{\theta}_y$');
+    set(lgd4,'Interpreter','latex','FontSize',16);
+    legend('boxoff');
+    legend('Location','best');
+    title('Sinal de Controle')
+    grid minor
 
 end
 
